@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sayed Khalaf Educational Platform</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Login Section -->
+    <div id="login-section" class="active-section">
+        <div class="container">
+            <div class="login-container">
+                <div class="logo">
+                    <h1>Sayed Khalaf</h1>
+                    <p>Educational Platform</p>
+                </div>
+                <div class="login-form">
+                    <h2>Login to Your Account</h2>
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="Enter your password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                    <p class="signup-text">Don't have an account? <a href="#" id="signup-link">Sign up</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Section -->
+    <div id="signup-section" class="hidden-section">
+        <div class="container">
+            <div class="login-container">
+                <div class="logo">
+                    <h1>Sayed Khalaf</h1>
+                    <p>Educational Platform</p>
+                </div>
+                <div class="login-form">
+                    <h2>Create an Account</h2>
+                    <form id="signup-form">
+                        <div class="form-group">
+                            <label for="fullname">Full Name</label>
+                            <input type="text" id="fullname" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signup-email">Email</label>
+                            <input type="email" id="signup-email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signup-password">Password</label>
+                            <input type="password" id="signup-password" placeholder="Create a password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm-password">Confirm Password</label>
+                            <input type="password" id="confirm-password" placeholder="Confirm your password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Sign Up</button>
+                    </form>
+                    <p class="signup-text">Already have an account? <a href="#" id="login-link">Login</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard-section" class="hidden-section">
+        <!-- Navigation -->
+        <nav class="main-nav">
+            <div class="container nav-container">
+                <div class="logo">
+                    <h1>Sayed Khalaf</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#" class="nav-link active" data-section="videos">Videos</a></li>
+                    <li><a href="#" class="nav-link" data-section="assignments">Assignments</a></li>
+                </ul>
+                <div class="user-actions">
+                    <a href="#" id="cart-icon" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cart-count">0</span>
+                    </a>
+                    <div class="user-profile">
+                        <span id="user-name">User</span>
+                        <a href="#" id="logout-btn">Logout</a>
+                    </div>
+                </div>
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Content Sections -->
+        <div class="dashboard-content">
+            <!-- Videos Section -->
+            <section id="videos-section" class="content-section active-content">
+                <div class="container">
+                    <h2 class="section-title">Educational Videos</h2>
+                    <div class="filter-bar">
+                        <div class="search-box">
+                            <input type="text" id="video-search" placeholder="Search videos...">
+                            <button id="search-btn"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div id="videos-container" class="cards-container">
+                        <!-- Videos will be dynamically added here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Assignments Section -->
+            <section id="assignments-section" class="content-section">
+                <div class="container">
+                    <h2 class="section-title">Assignments</h2>
+                    <div class="filter-bar">
+                        <div class="search-box">
+                            <input type="text" id="assignment-search" placeholder="Search assignments...">
+                            <button id="search-btn"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div id="assignments-container" class="cards-container">
+                        <!-- Assignments will be dynamically added here -->
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Cart Section -->
+    <div id="cart-section" class="hidden-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Your Cart</h2>
+                <button id="back-to-videos" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Videos
+                </button>
+            </div>
+            <div id="cart-items-container">
+                <!-- Cart items will be dynamically added here -->
+            </div>
+            <div class="cart-summary">
+                <div class="cart-total">
+                    <h3>Total: <span id="cart-total-amount">$0.00</span></h3>
+                </div>
+                <button id="complete-purchase" class="btn btn-primary">Complete Purchase</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Player Section -->
+    <div id="video-player-section" class="hidden-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 id="video-title" class="section-title">Video Title</h2>
+                <button id="back-from-video" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+            </div>
+            <div class="video-container">
+                <video id="video-player" controls>
+                    <source src="" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <div class="video-description">
+                <h3>Description</h3>
+                <p id="video-description-text"></p>
+            </div>
+            <div class="related-assignments">
+                <h3>Related Assignments</h3>
+                <div id="related-assignments-container">
+                    <!-- Related assignments will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

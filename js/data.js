@@ -1,0 +1,261 @@
+// data.js - Handles data storage and retrieval using localStorage
+
+// Sample data for initial setup
+const sampleVideos = [
+    {
+        id: 1,
+        title: "Introduction to Mathematics",
+        description: "A comprehensive introduction to basic mathematical concepts and principles.",
+        price: 19.99,
+        thumbnail: "https://via.placeholder.com/300x180?text=Mathematics",
+        videoUrl: "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"
+    },
+    {
+        id: 2,
+        title: "Advanced Algebra",
+        description: "Learn advanced algebraic equations and problem-solving techniques.",
+        price: 24.99,
+        thumbnail: "https://via.placeholder.com/300x180?text=Algebra",
+        videoUrl: "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"
+    },
+    {
+        id: 3,
+        title: "Geometry Fundamentals",
+        description: "Explore the fundamental concepts of geometry and spatial reasoning.",
+        price: 22.99,
+        thumbnail: "https://via.placeholder.com/300x180?text=Geometry",
+        videoUrl: "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"
+    },
+    {
+        id: 4,
+        title: "Calculus I",
+        description: "Introduction to differential calculus and its applications.",
+        price: 29.99,
+        thumbnail: "https://via.placeholder.com/300x180?text=Calculus",
+        videoUrl: "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"
+    },
+    {
+        id: 5,
+        title: "Statistics Basics",
+        description: "Learn the fundamentals of statistics and data analysis.",
+        price: 21.99,
+        thumbnail: "https://via.placeholder.com/300x180?text=Statistics",
+        videoUrl: "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"
+    },
+    {
+        id: 6,
+        title: "Trigonometry",
+        description: "Master the principles of trigonometry and circular functions.",
+        price: 23.99,
+        thumbnail: "https://via.placeholder.com/300x180?text=Trigonometry",
+        videoUrl: "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"
+    }
+];
+
+const sampleAssignments = [
+    {
+        id: 1,
+        title: "Mathematics Practice Problems",
+        description: "A set of practice problems covering basic mathematical concepts.",
+        relatedVideoId: 1,
+        dueDate: "2025-05-15"
+    },
+    {
+        id: 2,
+        title: "Algebra Equations Worksheet",
+        description: "Solve these algebraic equations to test your understanding.",
+        relatedVideoId: 2,
+        dueDate: "2025-05-20"
+    },
+    {
+        id: 3,
+        title: "Geometry Proofs Assignment",
+        description: "Complete these geometric proofs using the concepts learned in class.",
+        relatedVideoId: 3,
+        dueDate: "2025-05-25"
+    },
+    {
+        id: 4,
+        title: "Calculus Derivatives Problems",
+        description: "Practice finding derivatives of various functions.",
+        relatedVideoId: 4,
+        dueDate: "2025-06-01"
+    },
+    {
+        id: 5,
+        title: "Statistical Analysis Project",
+        description: "Analyze the provided dataset and present your findings.",
+        relatedVideoId: 5,
+        dueDate: "2025-06-05"
+    },
+    {
+        id: 6,
+        title: "Trigonometric Equations",
+        description: "Solve these trigonometric equations and graph the results.",
+        relatedVideoId: 6,
+        dueDate: "2025-06-10"
+    }
+];
+
+const sampleUsers = [
+    {
+        id: 1,
+        name: "Demo User",
+        email: "demo@example.com",
+        password: "password123", // In a real application, this would be hashed
+        purchasedVideos: [1, 3] // IDs of purchased videos
+    }
+];
+
+// Database class to handle localStorage operations
+class Database {
+    constructor() {
+        this.initializeDatabase();
+    }
+
+    // Initialize the database with sample data if it doesn't exist
+    initializeDatabase() {
+        if (!localStorage.getItem('videos')) {
+            localStorage.setItem('videos', JSON.stringify(sampleVideos));
+        }
+        
+        if (!localStorage.getItem('assignments')) {
+            localStorage.setItem('assignments', JSON.stringify(sampleAssignments));
+        }
+        
+        if (!localStorage.getItem('users')) {
+            localStorage.setItem('users', JSON.stringify(sampleUsers));
+        }
+        
+        if (!localStorage.getItem('currentUser')) {
+            localStorage.setItem('currentUser', null);
+        }
+        
+        if (!localStorage.getItem('cart')) {
+            localStorage.setItem('cart', JSON.stringify([]));
+        }
+    }
+
+    // User related methods
+    getUsers() {
+        return JSON.parse(localStorage.getItem('users')) || [];
+    }
+
+    getUserByEmail(email) {
+        const users = this.getUsers();
+        return users.find(user => user.email === email);
+    }
+
+    addUser(user) {
+        const users = this.getUsers();
+        user.id = users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1;
+        user.purchasedVideos = [];
+        users.push(user);
+        localStorage.setItem('users', JSON.stringify(users));
+        return user;
+    }
+
+    updateUser(updatedUser) {
+        const users = this.getUsers();
+        const index = users.findIndex(user => user.id === updatedUser.id);
+        if (index !== -1) {
+            users[index] = updatedUser;
+            localStorage.setItem('users', JSON.stringify(users));
+            return true;
+        }
+        return false;
+    }
+
+    setCurrentUser(user) {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+    }
+
+    getCurrentUser() {
+        return JSON.parse(localStorage.getItem('currentUser'));
+    }
+
+    clearCurrentUser() {
+        localStorage.setItem('currentUser', null);
+    }
+
+    // Video related methods
+    getVideos() {
+        return JSON.parse(localStorage.getItem('videos')) || [];
+    }
+
+    getVideoById(id) {
+        const videos = this.getVideos();
+        return videos.find(video => video.id === id);
+    }
+
+    getPurchasedVideos() {
+        const currentUser = this.getCurrentUser();
+        if (!currentUser) return [];
+        
+        const videos = this.getVideos();
+        return videos.filter(video => currentUser.purchasedVideos.includes(video.id));
+    }
+
+    // Assignment related methods
+    getAssignments() {
+        return JSON.parse(localStorage.getItem('assignments')) || [];
+    }
+
+    getAssignmentsByVideoId(videoId) {
+        const assignments = this.getAssignments();
+        return assignments.filter(assignment => assignment.relatedVideoId === videoId);
+    }
+
+    // Cart related methods
+    getCart() {
+        return JSON.parse(localStorage.getItem('cart')) || [];
+    }
+
+    addToCart(videoId) {
+        const cart = this.getCart();
+        if (!cart.includes(videoId)) {
+            cart.push(videoId);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            return true;
+        }
+        return false;
+    }
+
+    removeFromCart(videoId) {
+        let cart = this.getCart();
+        cart = cart.filter(id => id !== videoId);
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    clearCart() {
+        localStorage.setItem('cart', JSON.stringify([]));
+    }
+
+    // Purchase related methods
+    purchaseVideos(videoIds) {
+        const currentUser = this.getCurrentUser();
+        if (!currentUser) return false;
+        
+        // Add purchased videos to user's purchased list
+        currentUser.purchasedVideos = [...new Set([...currentUser.purchasedVideos, ...videoIds])];
+        
+        // Update user in database
+        this.updateUser(currentUser);
+        
+        // Update current user in session
+        this.setCurrentUser(currentUser);
+        
+        // Clear cart
+        this.clearCart();
+        
+        return true;
+    }
+
+    isVideoPurchased(videoId) {
+        const currentUser = this.getCurrentUser();
+        return currentUser && currentUser.purchasedVideos.includes(videoId);
+    }
+}
+
+// Create and export database instance
+const db = new Database();
